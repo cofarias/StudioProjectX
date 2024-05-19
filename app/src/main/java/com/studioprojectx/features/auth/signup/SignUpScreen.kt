@@ -1,0 +1,103 @@
+package com.studioprojectx.features.auth.signup
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.studioprojectx.features.auth.signup.model.SignUpUIState
+
+
+@Preview(showBackground = true, name = "Default")
+@Composable
+fun SignUpScreenPreview() {
+    SignUpScreen(
+        uiState = SignUpUIState(),
+        onSignUpClick = {}
+    )
+}
+
+@Composable
+fun SignUpScreen(
+    uiState: SignUpUIState,
+    onSignUpClick: () -> Unit
+) {
+
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
+    ) {
+
+        AnimatedVisibility(visible = uiState.error.isNullOrBlank()) {
+            uiState.error?.let {
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.Red)
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        text = it,
+                        color = Color.Red,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+            }
+        }
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = uiState.email,
+            onValueChange = uiState.onEmailChange,
+            shape = RoundedCornerShape(25),
+            label = {
+                Text(text = "Email")
+            }
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = uiState.password,
+            onValueChange = uiState.onPasswordChange,
+            shape = RoundedCornerShape(25),
+            label = {
+                Text(text = "Senha")
+            }
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = uiState.confirmPassword,
+            onValueChange = uiState.onConfirmPasswordChange,
+            shape = RoundedCornerShape(25),
+            label = {
+                Text(text = "Confirme a senha")
+            }
+        )
+
+        Button(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth(),
+            onClick = onSignUpClick,
+        ) {
+            Text(text = "Cadastrar")
+        }
+
+    }
+}
