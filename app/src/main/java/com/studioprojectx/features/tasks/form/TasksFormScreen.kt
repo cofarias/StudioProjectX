@@ -69,7 +69,7 @@ fun TaskFormScreen(
                         .padding(4.dp)
                 )
             },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF03A9F4))
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
         )
         Spacer(modifier = Modifier.size(8.dp))
         val title = uiState.title
@@ -86,7 +86,7 @@ fun TaskFormScreen(
             decorationBox = { innerTextField ->
                 if (title.isEmpty()) {
                     Text(
-                        text = "Title",
+                        text = "Título",
                         style = titleFontStyle.copy(
                             color = Color.Gray.copy(alpha = 0.5f)
                         ),
@@ -106,7 +106,7 @@ fun TaskFormScreen(
             decorationBox = { innerTextField ->
                 if (description.isEmpty()) {
                     Text(
-                        text = "Description",
+                        text = "Descrição",
                         style = descriptionFontStyle
                             .copy(
                                 color = Color.Gray.copy(alpha = 0.5f)

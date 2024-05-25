@@ -50,8 +50,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.studioprojectx.features.tasks.list.model.TasksListUIState
-import com.studioprojectx.generators.generateRandomTasks
 import com.studioprojectx.features.tasks.model.Task
+import com.studioprojectx.generators.generateRandomTasks
 import com.studioprojectx.ui.theme.StudioProjectXTheme
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -64,8 +64,14 @@ fun TasksListScreen(
     onExitToAppClick: () -> Unit = {}
 ) {
     Column {
+        val title = if (uiState.user != null) {
+            " ${uiState.user}"
+        } else {
+            "SPX App"
+        }
+
         TopAppBar(
-            title = { Text(text = "${uiState.user}") },
+            title = { Text(text = title) },
             actions = {
                 var isSearchTextFieldEnabled by remember {
                     mutableStateOf(false)
@@ -75,9 +81,10 @@ fun TasksListScreen(
                 }
                 AnimatedVisibility(visible = isSearchTextFieldEnabled) {
                     Icon(
-                        Icons.Filled.Close,
+                        tint = Color.Gray,
+                        imageVector = Icons.Filled.Close,
                         contentDescription = "ícone para fechar campo de texto de busca",
-                        Modifier
+                        modifier = Modifier
                             .clip(CircleShape)
                             .clickable {
                                 isSearchTextFieldEnabled = false
@@ -148,7 +155,7 @@ fun TasksListScreen(
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Icon(Icons.Filled.Add, contentDescription = "Add new task icon")
-                    Text(text = "New Task")
+                    Text(text = "")
                 }
             }
             LazyColumn(Modifier.fillMaxSize()) {
@@ -158,6 +165,7 @@ fun TasksListScreen(
                     }
                     Row(
                         Modifier
+                            .padding(start = 16.dp)
                             .fillMaxWidth()
                             .combinedClickable(onClick = {
                                 showDescription = !showDescription
@@ -167,12 +175,10 @@ fun TasksListScreen(
                     ) {
                         Box(
                             Modifier
-                                .padding(
-                                    vertical = 16.dp, horizontal = 8.dp
-                                )
+                                .padding(vertical = 16.dp, horizontal = 8.dp)
                                 .size(30.dp)
                                 .border(
-                                    border = BorderStroke(2.dp, color = Color.Gray),
+                                    border = BorderStroke(1.dp, color = Color.LightGray),
                                     shape = RoundedCornerShape(8.dp)
                                 )
                                 .clip(shape = RoundedCornerShape(8.dp))
@@ -184,19 +190,19 @@ fun TasksListScreen(
                                 Icon(
                                     Icons.Filled.Done,
                                     contentDescription = "Done icon",
-                                    Modifier.size(100.dp),
-                                    tint = Color.Green
+                                    Modifier.size(30.dp),
+                                    tint = Color.Magenta
                                 )
                             }
                         }
                         Column(
                             Modifier.padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             Text(
+                                modifier = Modifier.padding(top = 4.dp),
                                 text = task.title, style = TextStyle.Default.copy(
-                                    fontSize = 24.sp, fontWeight = FontWeight.Bold
-                                ), overflow = TextOverflow.Ellipsis, maxLines = 2
+                                    fontSize = 16.sp, fontWeight = FontWeight.Bold
+                                ), overflow = TextOverflow.Ellipsis, maxLines = 3
                             )
                             task.description?.let { description ->
                                 AnimatedVisibility(
@@ -204,7 +210,7 @@ fun TasksListScreen(
                                 ) {
                                     Text(
                                         text = description,
-                                        style = TextStyle.Default.copy(fontSize = 24.sp),
+                                        style = TextStyle.Default.copy(fontSize = 16.sp),
                                         overflow = TextOverflow.Ellipsis,
                                         maxLines = 3
                                     )
