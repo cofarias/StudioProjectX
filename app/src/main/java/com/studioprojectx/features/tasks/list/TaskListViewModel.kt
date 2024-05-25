@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.studioprojectx.domainlayer.authentication.FirebaseAuthRepository
 import com.studioprojectx.domainlayer.tasks.TasksRepository
+import com.studioprojectx.domainlayer.tasks.toTask
 import com.studioprojectx.features.tasks.list.model.TasksListUIState
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -17,11 +19,11 @@ class TaskListViewModel(
         MutableStateFlow(TasksListUIState())
     val uiState
         get() = _uiState
-//            .combine(repository.tasks) { uiState, tasks ->
-//                uiState.copy(tasks = tasks.map { it.toTask() })
-//            }.combine(firebaseAuthRepository.currentUser) { uiState, authResult ->
-//                uiState.copy(user = authResult.currentUser?.email)
-//            }
+            .combine(repository.tasks) { uiState, tasks ->
+                uiState.copy(tasks = tasks.map { it.toTask() })
+            }.combine(firebaseAuthRepository.currentUser) { uiState, authResult ->
+                uiState.copy(user = authResult.currentUser?.email)
+            }
 
     init {
         viewModelScope.launch {

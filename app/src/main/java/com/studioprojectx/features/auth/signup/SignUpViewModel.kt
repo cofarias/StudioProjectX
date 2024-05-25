@@ -40,7 +40,6 @@ class SignUpViewModel(
     }
 
     suspend fun signUp() {
-
         try {
             firebaseAuthRepository.signUp(
                 _uiState.value.email,
@@ -61,9 +60,5 @@ class SignUpViewModel(
                 it.copy(error = null)
             }
         }
-
-
     }
-
-
 }

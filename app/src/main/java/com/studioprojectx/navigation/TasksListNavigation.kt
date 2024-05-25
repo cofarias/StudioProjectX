@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.studioprojectx.features.tasks.list.TaskListViewModel
 import com.studioprojectx.features.tasks.list.TasksListScreen
+import com.studioprojectx.features.tasks.list.model.TasksListUIState
 import com.studioprojectx.models.Task
 import org.koin.androidx.compose.koinViewModel
 
@@ -18,8 +19,7 @@ fun NavGraphBuilder.tasksListScreen(
 ) {
     composable(tasksListRoute) {
         val viewModel = koinViewModel<TaskListViewModel>()
-
-        val uiState by viewModel.uiState.collectAsState()
+        val uiState by viewModel.uiState.collectAsState(TasksListUIState())
 
         TasksListScreen(
             uiState = uiState,

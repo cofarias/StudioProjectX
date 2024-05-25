@@ -7,7 +7,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.studioprojectx.navigation.authGraph
 import com.studioprojectx.navigation.homeGraph
@@ -31,8 +30,6 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val appViewModel = koinViewModel<AppViewModel>()
                 val appState by appViewModel.state.collectAsState(initial = AppState())
-                val currentBackStack by navController.currentBackStackEntryAsState()
-                val currentParentRoute = currentBackStack?.destination?.parent?.route
 
                 LaunchedEffect(appState) {
                     if (appState.isInitLoading) {

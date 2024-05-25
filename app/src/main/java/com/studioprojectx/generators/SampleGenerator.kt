@@ -10,6 +10,7 @@ fun generateRandomTasks(
     val index = it + 1
     Task(
         title = generateLoremIpsum(index),
+        description = generateLoremIpsum(amountWords = index * index),
         isDone = index.mod(2) == 0
     )
 }

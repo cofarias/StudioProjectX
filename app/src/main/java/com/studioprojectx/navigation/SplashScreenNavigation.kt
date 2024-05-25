@@ -13,7 +13,7 @@ import androidx.navigation.compose.composable
 const val splashScreenRoute = "splashscreen"
 
 fun NavGraphBuilder.splashScreen() {
-    composable(signUpRoute) {
+    composable(splashScreenRoute) {
         Box(
             modifier = Modifier
                 .fillMaxSize()

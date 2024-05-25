@@ -6,6 +6,7 @@ import com.google.firebase.ktx.Firebase
 import com.studioprojectx.AppViewModel
 import com.studioprojectx.database.SPXDatabase
 import com.studioprojectx.domainlayer.authentication.FirebaseAuthRepository
+import com.studioprojectx.domainlayer.authentication.UsersRepository
 import com.studioprojectx.domainlayer.tasks.TasksRepository
 import com.studioprojectx.features.auth.signin.SignInViewModel
 import com.studioprojectx.features.auth.signup.SignUpViewModel
@@ -26,15 +27,19 @@ val appModule = module {
 
 val storageModule = module {
     singleOf(::TasksRepository)
+    singleOf(::UsersRepository)
     singleOf(::FirebaseAuthRepository)
 
     single {
         Room.databaseBuilder(
             androidContext(),
-            SPXDatabase::class.java, "studio-project-x.db"
+            SPXDatabase::class.java, "spx.db"
         ).build()
     }
-    single { get<SPXDatabase>().taskDao() }
+
+    single {
+        get<SPXDatabase>().taskDao()
+    }
 }
 
 val firebaseModule = module {

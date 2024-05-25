@@ -17,7 +17,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -82,7 +85,6 @@ fun SignInScreen(
                 tint = MaterialTheme.colorScheme.onPrimary
             )
             Spacer(modifier = Modifier.size(16.dp))
-           // Text(text = "Minhas tarefas", style = Typography.titleLarge)
             Text(text = "Minhas tarefas")
             Spacer(modifier = Modifier.size(16.dp))
             val textFieldModifier = Modifier
@@ -109,10 +111,10 @@ fun SignInScreen(
                 textFieldModifier,
                 shape = RoundedCornerShape(25),
                 leadingIcon = {
-//                    Icon(
-//                        Icons.Filled.Password,
-//                        contentDescription = "ícone de usuário"
-//                    )
+                    Icon(
+                        Icons.Filled.Password,
+                        contentDescription = "ícone de usuário"
+                    )
                 },
                 label = {
                     Text("Senha")
@@ -125,20 +127,19 @@ fun SignInScreen(
                         }
                     when (uiState.isShowPassword) {
                         true -> {
-//                            Icon(
-//                                Icons.Filled.Visibility,
-//                                contentDescription = "ícone de visível",
-//                                trailingIconModifier
-//                            )
+                            Icon(
+                                Icons.Filled.Visibility,
+                                contentDescription = "ícone de visível",
+                                trailingIconModifier
+                            )
                         }
 
                         else ->
-                            println("oie")
-//                            Icon(
-//                            Icons.Filled.VisibilityOff,
-//                            contentDescription = "ícone de não visível",
-//                            trailingIconModifier
-//                        )
+                            Icon(
+                                Icons.Filled.VisibilityOff,
+                                contentDescription = "ícone de não visível",
+                                trailingIconModifier
+                            )
                     }
                 },
                 visualTransformation = when (uiState.isShowPassword) {

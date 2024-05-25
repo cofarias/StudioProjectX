@@ -37,8 +37,8 @@ class SignInViewModel(
      suspend fun signIn() {
         try {
             firebaseAuthRepository.signIn(
-                _uiState.value.email,
-                _uiState.value.password
+                email = _uiState.value.email,
+                password = _uiState.value.password
             )
 
         } catch (exception: Exception) {

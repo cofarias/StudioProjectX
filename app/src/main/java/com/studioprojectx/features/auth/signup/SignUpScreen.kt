@@ -2,19 +2,24 @@ package com.studioprojectx.features.auth.signup
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.studioprojectx.features.auth.signup.model.SignUpUIState
@@ -34,70 +39,79 @@ fun SignUpScreen(
     uiState: SignUpUIState,
     onSignUpClick: () -> Unit
 ) {
-
     Column(
-        modifier = Modifier
-            .padding(16.dp)
+        Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
-
-        AnimatedVisibility(visible = uiState.error.isNullOrBlank()) {
+        AnimatedVisibility(visible = uiState.error != null) {
             uiState.error?.let {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.Red)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Red)
                 ) {
                     Text(
-                        modifier = Modifier
+                        text = it,
+                        Modifier
                             .padding(16.dp)
                             .fillMaxWidth(),
-                        text = it,
-                        color = Color.Red,
+                        color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                 }
-
             }
         }
-
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = uiState.email,
-            onValueChange = uiState.onEmailChange,
-            shape = RoundedCornerShape(25),
-            label = {
-                Text(text = "Email")
-            }
-        )
-
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = uiState.password,
-            onValueChange = uiState.onPasswordChange,
-            shape = RoundedCornerShape(25),
-            label = {
-                Text(text = "Senha")
-            }
-        )
-
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = uiState.confirmPassword,
-            onValueChange = uiState.onConfirmPasswordChange,
-            shape = RoundedCornerShape(25),
-            label = {
-                Text(text = "Confirme a senha")
-            }
-        )
-
-        Button(
-            modifier = Modifier
-                .padding(top = 16.dp)
+        Text(
+            text = "Cadastrando usuário",
+            Modifier
+                .padding(8.dp)
                 .fillMaxWidth(),
-            onClick = onSignUpClick,
+        )
+        Column(
+            Modifier
+                .fillMaxWidth(0.8f)
+                .weight(1f)
+                .padding(8.dp)
+                .align(Alignment.CenterHorizontally),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(text = "Cadastrar")
+            OutlinedTextField(
+                value = uiState.email,
+                onValueChange = uiState.onEmailChange,
+                Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(25),
+                label = {
+                    Text(text = "Email")
+                }
+            )
+            OutlinedTextField(
+                value = uiState.password,
+                onValueChange = uiState.onPasswordChange,
+                Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(25),
+                label = {
+                    Text(text = "Senha")
+                },
+                visualTransformation = PasswordVisualTransformation()
+            )
+            OutlinedTextField(
+                value = uiState.confirmPassword,
+                onValueChange = uiState.onConfirmPasswordChange,
+                Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(25),
+                label = {
+                    Text(text = "Confirmar senha")
+                },
+                visualTransformation = PasswordVisualTransformation()
+            )
+            Button(
+                onClick = onSignUpClick,
+                Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Cadastrar")
+            }
         }
-
     }
 }

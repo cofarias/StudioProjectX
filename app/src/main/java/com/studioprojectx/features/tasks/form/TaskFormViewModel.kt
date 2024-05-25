@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.studioprojectx.domainlayer.tasks.TasksRepository
+import com.studioprojectx.domainlayer.tasks.toTask
 import com.studioprojectx.features.tasks.form.model.TaskFormUIState
 import com.studioprojectx.models.Task
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,8 +47,7 @@ class TaskFormViewModel(
                 repository.findById(id)
                     .filterNotNull()
                     .mapNotNull {
-                        // it.toTask()
-                        it
+                        it.toTask()
                     }.collectLatest { task ->
                         _uiState.update { currentState ->
                             currentState.copy(

@@ -24,8 +24,9 @@ fun NavGraphBuilder.signUpScreen(
         val signUpIsSuccessful by viewModel.signUpIsSuccessful.collectAsState(initial = false)
 
         LaunchedEffect(signUpIsSuccessful) {
-            if(signUpIsSuccessful)
+            if (signUpIsSuccessful) {
                 onNavigationToSignIn()
+            }
         }
 
         SignUpScreen(
