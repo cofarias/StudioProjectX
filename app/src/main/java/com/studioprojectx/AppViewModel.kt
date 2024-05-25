@@ -2,7 +2,7 @@ package com.studioprojectx
 
 import androidx.lifecycle.ViewModel
 import com.studioprojectx.domainlayer.authentication.FirebaseAuthRepository
-import com.studioprojectx.models.User
+import com.studioprojectx.features.auth.model.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 

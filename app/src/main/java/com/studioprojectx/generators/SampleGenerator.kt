@@ -1,7 +1,7 @@
 package com.studioprojectx.generators
 
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import com.studioprojectx.models.Task
+import com.studioprojectx.features.tasks.model.Task
 import kotlin.random.Random
 
 fun generateRandomTasks(

@@ -51,7 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.studioprojectx.features.tasks.list.model.TasksListUIState
 import com.studioprojectx.generators.generateRandomTasks
-import com.studioprojectx.models.Task
+import com.studioprojectx.features.tasks.model.Task
 import com.studioprojectx.ui.theme.StudioProjectXTheme
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)

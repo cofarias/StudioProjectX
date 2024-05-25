@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.studioprojectx.domainlayer.tasks.TasksRepository
 import com.studioprojectx.domainlayer.tasks.toTask
 import com.studioprojectx.features.tasks.form.model.TaskFormUIState
-import com.studioprojectx.models.Task
+import com.studioprojectx.features.tasks.model.Task
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest

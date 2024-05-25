@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import com.studioprojectx.features.tasks.list.TaskListViewModel
 import com.studioprojectx.features.tasks.list.TasksListScreen
 import com.studioprojectx.features.tasks.list.model.TasksListUIState
-import com.studioprojectx.models.Task
+import com.studioprojectx.features.tasks.model.Task
 import org.koin.androidx.compose.koinViewModel
 
 const val tasksListRoute = "tasksList"

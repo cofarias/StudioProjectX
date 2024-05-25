@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.navOptions
 import androidx.navigation.navigation
-import com.studioprojectx.models.Task
+import com.studioprojectx.features.tasks.model.Task
 
 const val homeGraphRoute = "homeGraph"
 

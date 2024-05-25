@@ -2,7 +2,7 @@ package com.studioprojectx.domainlayer.tasks
 
 import com.studioprojectx.database.dao.TaskDao
 import com.studioprojectx.database.entities.TaskEntity
-import com.studioprojectx.models.Task
+import com.studioprojectx.features.tasks.model.Task
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 

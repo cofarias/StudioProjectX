@@ -1,4 +1,4 @@
-package com.studioprojectx.models
+package com.studioprojectx.features.tasks.model
 
 import java.util.UUID
 

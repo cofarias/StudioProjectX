@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.studioprojectx.features.tasks.form.TaskFormScreen
 import com.studioprojectx.features.tasks.form.TaskFormViewModel
-import com.studioprojectx.models.Task
+import com.studioprojectx.features.tasks.model.Task
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
