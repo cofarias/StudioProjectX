@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -85,7 +86,7 @@ fun SignInScreen(
                 tint = MaterialTheme.colorScheme.onPrimary
             )
             Spacer(modifier = Modifier.size(16.dp))
-            Text(text = "Minhas tarefas")
+            Text(text = "Minhas tarefas", style = TextStyle.Default)
             Spacer(modifier = Modifier.size(16.dp))
             val textFieldModifier = Modifier
                 .fillMaxWidth(0.8f)
@@ -134,12 +135,11 @@ fun SignInScreen(
                             )
                         }
 
-                        else ->
-                            Icon(
-                                Icons.Filled.VisibilityOff,
-                                contentDescription = "ícone de não visível",
-                                trailingIconModifier
-                            )
+                        else -> Icon(
+                            Icons.Filled.VisibilityOff,
+                            contentDescription = "ícone de não visível",
+                            trailingIconModifier
+                        )
                     }
                 },
                 visualTransformation = when (uiState.isShowPassword) {

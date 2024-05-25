@@ -23,7 +23,7 @@ class SignInViewModel(
                     _uiState.update { it.copy(email = email) }
                 },
                 onPasswordChange = { password ->
-                    _uiState.update { it.copy(email = password) }
+                    _uiState.update { it.copy(password = password) }
                 },
                 onTogglePasswordVisibility = {
                     _uiState.update {
