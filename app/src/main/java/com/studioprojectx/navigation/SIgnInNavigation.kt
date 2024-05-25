@@ -1,6 +1,5 @@
 package com.studioprojectx.navigation
 
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -8,37 +7,29 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.studioprojectx.authentication.FirebaseAuthRepository
-import com.studioprojectx.features.auth.signup.SignUpScreen
-import com.studioprojectx.features.auth.signup.SignUpViewModel
+import com.studioprojectx.features.auth.signin.SignInScreen
+import com.studioprojectx.features.auth.signin.SignInViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 const val signInRoute: String = "signIn"
 
 fun NavGraphBuilder.signInScreen(
-    onNavigateToTasksList: () -> Unit,
     onNavigateToSignUp: () -> Unit
 ) {
     composable(signInRoute) {
-        val viewModel = SignUpViewModel(firebaseAuthRepository = FirebaseAuthRepository(firebaseAuth = Firebase.auth))
+        val viewModel = koinViewModel<SignInViewModel>()
         val uiState by viewModel.uiState.collectAsState()
         val scope = rememberCoroutineScope()
-        val signUpIsSuccessful by viewModel.signUpIsSuccessful.collectAsState(initial = false)
 
-        LaunchedEffect(signUpIsSuccessful) {
-            if(signUpIsSuccessful)
-                onNavigateToTasksList()
-        }
-
-        SignUpScreen(
+        SignInScreen(
             uiState = uiState,
-            onSignUpClick = {
+            onSignInClick = {
                 scope.launch {
-                    viewModel.signUp()
+                    viewModel.signIn()
                 }
-            }
+            },
+            onSignUpClick = onNavigateToSignUp
         )
     }
 }

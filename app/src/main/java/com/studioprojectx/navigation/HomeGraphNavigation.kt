@@ -2,9 +2,10 @@ package com.studioprojectx.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import com.studioprojectx.models.Task
 import androidx.navigation.NavOptions
+import androidx.navigation.navOptions
 import androidx.navigation.navigation
+import com.studioprojectx.models.Task
 
 const val homeGraphRoute = "homeGraph"
 
@@ -26,7 +27,11 @@ fun NavGraphBuilder.homeGraph(
 }
 
 fun NavHostController.navigateToHomeGraph(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = navOptions {
+        popUpTo(graph.id) {
+            inclusive = true
+        }
+    }
 ) {
     navigate(homeGraphRoute, navOptions)
 }

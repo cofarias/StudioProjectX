@@ -5,11 +5,10 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.studioprojectx.authentication.FirebaseAuthRepository
-import com.studioprojectx.features.auth.signup.SignUpViewModel
+import com.studioprojectx.features.tasks.list.TaskListViewModel
+import com.studioprojectx.features.tasks.list.TasksListScreen
 import com.studioprojectx.models.Task
+import org.koin.androidx.compose.koinViewModel
 
 const val tasksListRoute = "tasksList"
 
@@ -18,18 +17,19 @@ fun NavGraphBuilder.tasksListScreen(
     onNavigateToEditTaskForm: (Task) -> Unit
 ) {
     composable(tasksListRoute) {
-        val viewModel = SignUpViewModel(
-            firebaseAuthRepository = FirebaseAuthRepository(
-                Firebase.auth
-            )
-        )
+        val viewModel = koinViewModel<TaskListViewModel>()
 
         val uiState by viewModel.uiState.collectAsState()
-    }
 
-//    TasksListScreen(
-//        uiState = uiS
-//    )
+        TasksListScreen(
+            uiState = uiState,
+            onNewTaskClick = onNavigateToNewTaskForm,
+            onTaskClick = onNavigateToEditTaskForm,
+            onExitToAppClick = {
+                viewModel.signOut()
+            }
+        )
+    }
 }
 
 fun NavHostController.navigateToTasksList() {

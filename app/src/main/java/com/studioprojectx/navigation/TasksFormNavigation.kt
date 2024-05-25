@@ -6,12 +6,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.studioprojectx.authentication.FirebaseAuthRepository
-import com.studioprojectx.features.auth.signup.SignUpViewModel
-import com.studioprojectx.models.Task
 import androidx.navigation.navArgument
+import com.studioprojectx.features.tasks.form.TaskFormScreen
+import com.studioprojectx.features.tasks.form.TaskFormViewModel
+import com.studioprojectx.models.Task
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 const val taskFormRoute = "taskForm"
 const val taskIdArgument = "taskId"
@@ -23,19 +24,25 @@ fun NavGraphBuilder.taskFormScreen(
         val taskId = navArgument(taskIdArgument) {
             nullable = true
         }
-
         val scope = rememberCoroutineScope()
-        val viewModel = SignUpViewModel(
-            firebaseAuthRepository = FirebaseAuthRepository(
-                Firebase.auth
-            )
-        )
+        val viewModel = koinViewModel<TaskFormViewModel>(
+            parameters = { parametersOf(taskId) })
         val uiState by viewModel.uiState.collectAsState()
+        TaskFormScreen(
+            uiState = uiState,
+            onSaveClick = {
+                scope.launch {
+                    viewModel.save()
+                    onPopBackStack()
+                }
+            },
+            onDeleteClick = {
+                scope.launch {
+                    viewModel.delete()
+                    onPopBackStack()
+                }
+            })
     }
-
-//    TasksListScreen(
-//        uiState = uiS
-//    )
 }
 
 fun NavHostController.navigateToNewTaskForm() {

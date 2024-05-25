@@ -7,21 +7,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.studioprojectx.authentication.FirebaseAuthRepository
 import com.studioprojectx.features.auth.signup.SignUpScreen
 import com.studioprojectx.features.auth.signup.SignUpViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 const val signUpRoute = "signUp"
-
 
 fun NavGraphBuilder.signUpScreen(
     onNavigationToSignIn: () -> Unit
 ) {
     composable(signUpRoute) {
-        val viewModel = SignUpViewModel(firebaseAuthRepository = FirebaseAuthRepository(firebaseAuth = Firebase.auth))
+        val viewModel = koinViewModel<SignUpViewModel>()
         val uiState by viewModel.uiState.collectAsState()
         val scope = rememberCoroutineScope()
         val signUpIsSuccessful by viewModel.signUpIsSuccessful.collectAsState(initial = false)

@@ -1,111 +1,77 @@
 package com.studioprojectx
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.studioprojectx.navigation.authGraph
-import com.studioprojectx.navigation.authGraphRoute
 import com.studioprojectx.navigation.homeGraph
+import com.studioprojectx.navigation.navigateToAuthGraph
 import com.studioprojectx.navigation.navigateToEditTaskForm
 import com.studioprojectx.navigation.navigateToHomeGraph
 import com.studioprojectx.navigation.navigateToNewTaskForm
 import com.studioprojectx.navigation.navigateToSignIn
 import com.studioprojectx.navigation.navigateToSignUp
-import com.studioprojectx.ui.theme.StudioprojectxTheme
-
-private const val TAG = "MainActivity"
+import com.studioprojectx.navigation.splashScreen
+import com.studioprojectx.navigation.splashScreenRoute
+import com.studioprojectx.ui.theme.StudioProjectXTheme
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val auth = Firebase.auth
-        Log.i(TAG, "onCreate do usuário atual: ${auth.currentUser}")
-
-        auth.createUserWithEmailAndPassword(
-            "fariasoc@outlook.com",
-            "123456"
-        ).addOnCompleteListener { task ->
-            if(task.isSuccessful) {
-                Log.i(TAG, "Usuário criado com sucesso")
-            } else {
-                Log.i(TAG, "Falha ao criar o usuário-> ${task.exception}")
-            }
-        }
-
-        auth.createUserWithEmailAndPassword(
-            "fariasoc@outlook.com",
-            "123456"
-        )
-
         setContent {
-            StudioprojectxTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    val navController = rememberNavController()
+            StudioProjectXTheme {
+                val navController = rememberNavController()
+                val appViewModel = koinViewModel<AppViewModel>()
+                val appState by appViewModel.state.collectAsState(initial = AppState())
+                val currentBackStack by navController.currentBackStackEntryAsState()
+                val currentParentRoute = currentBackStack?.destination?.parent?.route
 
-                    NavHost(
-                        navController = navController,
-                        startDestination = authGraphRoute
-                    ) {
-                        authGraph(
-                            onNavigateToHomeGraph = {
-                                navController.navigateToHomeGraph(it)
-                            },
-                            onNavigateToSignIn = {
-                                navController.navigateToSignIn(it)
-                            },
-                            onNavigateToSignUp = {
-                                navController.navigateToSignUp()
-                            }
-                        )
-                        homeGraph(
-                            onNavigateToNewTaskForm = {
-                                navController.navigateToNewTaskForm()
-                            },
-                            onNavigateToEditTaskForm = { task ->
-                                navController.navigateToEditTaskForm(task)
-                            },
-                            onPopBackStack = {
-                                navController.popBackStack()
-                            }
-                        )
+                LaunchedEffect(appState) {
+                    if (appState.isInitLoading) {
+                        return@LaunchedEffect
                     }
 
-                    Greeting("Android")
+                    appState.user?.let {
+                        navController.navigateToHomeGraph()
+                    } ?: navController.navigateToAuthGraph()
+                }
+
+                NavHost(
+                    navController = navController,
+                    startDestination = splashScreenRoute
+                ) {
+                    splashScreen()
+
+                    authGraph(
+                        onNavigateToSignIn = {
+                            navController.navigateToSignIn(it)
+                        },
+                        onNavigateToSignUp = {
+                            navController.navigateToSignUp()
+                        }
+                    )
+
+                    homeGraph(
+                        onNavigateToNewTaskForm = {
+                            navController.navigateToNewTaskForm()
+                        },
+                        onNavigateToEditTaskForm = { task ->
+                            navController.navigateToEditTaskForm(task)
+                        },
+                        onPopBackStack = {
+                            navController.popBackStack()
+                        }
+                    )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    StudioprojectxTheme {
-        Greeting("Android")
     }
 }
