@@ -74,8 +74,10 @@ fun TaskFormScreen(
         Spacer(modifier = Modifier.size(8.dp))
         val title = uiState.title
         val description = uiState.description
+        val observations = uiState.observations
         val titleFontStyle = TextStyle.Default.copy(fontSize = 24.sp)
         val descriptionFontStyle = TextStyle.Default.copy(fontSize = 18.sp)
+        val observationsFontStyle = TextStyle.Default.copy(fontSize = 18.sp)
 
         BasicTextField(
             value = title,
@@ -96,12 +98,13 @@ fun TaskFormScreen(
             },
             textStyle = titleFontStyle
         )
+
         Spacer(modifier = Modifier.size(16.dp))
+
         BasicTextField(
             value = description, onValueChange = uiState.onDescriptionChange,
             Modifier
                 .fillMaxWidth()
-                .weight(1f)
                 .padding(horizontal = 16.dp),
             decorationBox = { innerTextField ->
                 if (description.isEmpty()) {
@@ -116,6 +119,26 @@ fun TaskFormScreen(
                 innerTextField()
             },
             textStyle = descriptionFontStyle
+        )
+
+        BasicTextField(
+            value = observations, onValueChange = uiState.onObservationsChange,
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            decorationBox = { innerTextField ->
+                if (observations.isEmpty()) {
+                    Text(
+                        text = "Observações",
+                        style = observationsFontStyle
+                            .copy(
+                                color = Color.Gray.copy(alpha = 0.5f)
+                            )
+                    )
+                }
+                innerTextField()
+            },
+            textStyle = observationsFontStyle
         )
     }
 }

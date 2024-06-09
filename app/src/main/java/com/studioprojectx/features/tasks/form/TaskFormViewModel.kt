@@ -39,6 +39,11 @@ class TaskFormViewModel(
                         it.copy(description = description)
                     }
                 },
+                onObservationsChange = { observations ->
+                    _uiState.update {
+                        it.copy(observations = observations)
+                    }
+                },
                 topAppBarTitle = "Criando uma tarefa"
             )
         }
@@ -54,6 +59,7 @@ class TaskFormViewModel(
                                 topAppBarTitle = "Editando tarefa",
                                 title = task.title,
                                 description = task.description ?: "",
+                                observations = task.observations ?: "",
                                 isDeleteEnabled = true
                             )
                         }
@@ -68,7 +74,8 @@ class TaskFormViewModel(
                 Task(
                     id = id ?: UUID.randomUUID().toString(),
                     title = title,
-                    description = description
+                    description = description,
+                    observations = observations
                 )
             )
         }
