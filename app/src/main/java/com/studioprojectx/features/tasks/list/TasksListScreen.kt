@@ -198,22 +198,36 @@ fun TasksListScreen(
                         Column(
                             Modifier.padding(16.dp),
                         ) {
-                            Text(
-                                modifier = Modifier.padding(top = 4.dp),
-                                text = task.title, style = TextStyle.Default.copy(
-                                    fontSize = 16.sp, fontWeight = FontWeight.Bold
-                                ), overflow = TextOverflow.Ellipsis, maxLines = 3
-                            )
-                            task.description?.let { description ->
-                                AnimatedVisibility(
-                                    visible = showDescription && description.isNotBlank()
-                                ) {
-                                    Text(
-                                        text = description,
-                                        style = TextStyle.Default.copy(fontSize = 16.sp),
-                                        overflow = TextOverflow.Ellipsis,
-                                        maxLines = 3
-                                    )
+
+                            if (uiState.tasks.isEmpty()) {
+                                Text(text = "Crie sua primeira tarefa")
+                            } else {
+                                Text(
+                                    modifier = Modifier.padding(top = 4.dp),
+                                    text = task.title, style = TextStyle.Default.copy(
+                                        fontSize = 16.sp, fontWeight = FontWeight.Bold
+                                    ), overflow = TextOverflow.Ellipsis, maxLines = 3
+                                )
+                                task.description?.let { description ->
+                                    AnimatedVisibility(
+                                        visible = showDescription && description.isNotBlank()
+                                    ) {
+                                        Column {
+                                            Text(
+                                                modifier = Modifier.padding(vertical = 10.dp),
+                                                text = description,
+                                                style = TextStyle.Default.copy(fontSize = 16.sp),
+                                                overflow = TextOverflow.Ellipsis,
+                                                maxLines = 3
+                                            )
+                                            Text(
+                                                text = task.observations ?: "",
+                                                style = TextStyle.Default.copy(fontSize = 16.sp),
+                                                overflow = TextOverflow.Ellipsis,
+                                                maxLines = 3
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }

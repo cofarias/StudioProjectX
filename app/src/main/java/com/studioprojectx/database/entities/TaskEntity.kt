@@ -10,5 +10,6 @@ data class TaskEntity(
     val id: String = UUID.randomUUID().toString(),
     val title: String,
     val description: String? = null,
+    val observations: String? = null,
     val isDone: Boolean = false
 )

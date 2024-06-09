@@ -11,6 +11,7 @@ fun generateRandomTasks(
     Task(
         title = generateLoremIpsum(index),
         description = generateLoremIpsum(amountWords = index * index),
+        observations = generateLoremIpsum(amountWords = index),
         isDone = index.mod(2) == 0
     )
 }

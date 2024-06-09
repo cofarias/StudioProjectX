@@ -37,11 +37,13 @@ fun Task.toTaskEntity() = TaskEntity(
     id = this.id,
     title = this.title,
     description = this.description,
+    observations = this.observations,
     isDone = this.isDone
 )
 fun TaskEntity.toTask() = Task(
     id = this.id,
     title = this.title,
     description = this.description,
+    observations = this.observations,
     isDone = this.isDone
 )

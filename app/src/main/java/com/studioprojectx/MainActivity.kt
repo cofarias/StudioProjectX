@@ -16,6 +16,7 @@ import com.studioprojectx.navigation.navigateToHomeGraph
 import com.studioprojectx.navigation.navigateToNewTaskForm
 import com.studioprojectx.navigation.navigateToSignIn
 import com.studioprojectx.navigation.navigateToSignUp
+import com.studioprojectx.navigation.navigateToTasksList
 import com.studioprojectx.navigation.splashScreen
 import com.studioprojectx.navigation.splashScreenRoute
 import com.studioprojectx.ui.theme.StudioProjectXTheme
@@ -57,6 +58,9 @@ class MainActivity : ComponentActivity() {
                     )
 
                     homeGraph(
+                        onNavigateToTaskList = {
+                            navController.navigateToTasksList()
+                        },
                         onNavigateToNewTaskForm = {
                             navController.navigateToNewTaskForm()
                         },
