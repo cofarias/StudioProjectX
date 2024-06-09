@@ -10,14 +10,21 @@ import com.studioprojectx.features.tasks.model.Task
 const val homeGraphRoute = "homeGraph"
 
 fun NavGraphBuilder.homeGraph(
+    onNavigateToTaskList: () -> Unit,
     onNavigateToNewTaskForm: () -> Unit,
     onNavigateToEditTaskForm: (Task) -> Unit,
     onPopBackStack: () -> Unit
 ) {
     navigation(
-        startDestination = tasksListRoute,
+        //startDestination = tasksListRoute,
+        startDestination = homeRoute,
         route = homeGraphRoute
     ) {
+        homeScreen(
+            onNavigateToNewTaskForm = onNavigateToNewTaskForm,
+            onNavigateToTaskList = onNavigateToTaskList
+        )
+
         tasksListScreen(
             onNavigateToNewTaskForm = onNavigateToNewTaskForm,
             onNavigateToEditTaskForm = onNavigateToEditTaskForm
