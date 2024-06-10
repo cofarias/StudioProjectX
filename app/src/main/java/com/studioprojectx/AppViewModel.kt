@@ -15,6 +15,8 @@ class AppViewModel(
     private val firebaseAuthRepository: FirebaseAuthRepository
 ): ViewModel() {
 
+
+
     private val _state = MutableStateFlow(AppState())
     val state = _state.combine(firebaseAuthRepository.currentUser) { appState, authResult ->
 

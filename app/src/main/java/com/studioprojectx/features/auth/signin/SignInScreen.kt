@@ -18,7 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.Outbound
+import androidx.compose.material.icons.filled.AllInclusive
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
@@ -82,8 +82,8 @@ fun SignInScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
-                Icons.AutoMirrored.Rounded.Outbound,
-                contentDescription = "Ícone minhas tarefas",
+                Icons.Filled.AllInclusive,
+                contentDescription = "Ícone login",
                 Modifier
                     .clip(CircleShape)
                     .size(150.dp)
@@ -94,7 +94,6 @@ fun SignInScreen(
             Spacer(modifier = Modifier.size(26.dp))
 
             Text(
-                //modifier = Modifier.size(120.dp),
                 text = "Studio Project X",
                 style = TextStyle(
                     fontSize = 30.sp
