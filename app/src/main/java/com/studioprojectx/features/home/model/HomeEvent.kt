@@ -1,0 +1,5 @@
+package com.studioprojectx.features.home.model
+
+sealed interface HomeEvent {
+    data object AddProduct: HomeEvent
+}

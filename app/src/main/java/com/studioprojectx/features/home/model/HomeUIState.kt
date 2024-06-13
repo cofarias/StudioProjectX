@@ -1,12 +1,10 @@
 package com.studioprojectx.features.home.model
 
 data class HomeUIState(
-    val title: String = "",
-    val description: String = "",
-    val observations: String = "",
-    val topAppBarTitle: String = "",
-    val onTitleChange: (String) -> Unit = {},
-    val onDescriptionChange: (String) -> Unit = {},
-    val onObservationsChange: (String) -> Unit = {},
-    val isDeleteEnabled: Boolean = false,
+    val nameProduct: String = "",
+    val nameProductChange: (String) -> Unit = {},
+    val descriptionProduct: String = "",
+    val descriptionProductChange: (String) -> Unit = {},
+    val observationProduct: String = "",
+    val observationProductChange: (String) -> Unit = {},
 )

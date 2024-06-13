@@ -1,12 +1,15 @@
 package com.studioprojectx
 
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -26,11 +29,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ConfigUpdate
+import com.google.firebase.remoteconfig.ConfigUpdateListener
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import com.studioprojectx.navigation.authGraph
@@ -49,8 +56,9 @@ import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
 
-//    private lateinit var binding: ActivityMainBinding
     private lateinit var remoteConfig: FirebaseRemoteConfig
+
+    private var showBottomBar = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -65,13 +73,38 @@ class MainActivity : ComponentActivity() {
         remoteConfig.fetchAndActivate()
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val showButton = remoteConfig.getBoolean("show_button_facebook")
-
-
+                    showBottomBar = remoteConfig.getBoolean("show_bottom_bar")
+                    println("Valor da chave 'show_bottom_bar': $showBottomBar")
                 } else {
-                    Log.i("Info teste", "Error: ${task.exception?.printStackTrace()}")
+                    Toast.makeText(
+                        this,
+                        "Fetch failed",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
             }
+
+
+        println("Número de chaves = ${remoteConfig.all.size}")
+        println("Nome da chave = ${remoteConfig.all.keys}")
+
+        remoteConfig.addOnConfigUpdateListener(object : ConfigUpdateListener {
+            @RequiresApi(Build.VERSION_CODES.R)
+            override fun onUpdate(configUpdate: ConfigUpdate) {
+                if (configUpdate.updatedKeys.contains("show_bottom_bar")) {
+                    remoteConfig.activate().addOnCompleteListener {
+
+
+                    }
+                }
+            }
+
+            override fun onError(error: FirebaseRemoteConfigException) {
+                println("Erroor")
+            }
+        }
+        )
+
 
         setContent {
             StudioProjectXTheme {
@@ -141,38 +174,44 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
-                    BottomAppBar(
-                        actions = {
-                            itemsBottomMenu.forEach { item ->
-                                NavigationBarItem(
-                                    label = { item.first },
-                                    selected = selectedItem == item,
-                                    onClick = {
-                                        selectedItem = item
+
+                    if (showBottomBar) {
+                        BottomAppBar(
+                            modifier = Modifier.height(50.dp),
+                            tonalElevation = 58.dp,
+                            contentColor = Color.Cyan,
+                            containerColor = Color.Black,
+                            actions = {
+                                itemsBottomMenu.forEach { item ->
+                                    NavigationBarItem(
+                                        label = { item.first },
+                                        selected = selectedItem == item,
+                                        onClick = {
+                                            selectedItem = item
 //                                        val route = when (item.first) {
 //                                            "Tela A" -> TasksListScreen(uiState = TasksListUIState())
 //                                        }
-                                    },
-                                    icon = {
-                                        Icon(
-                                            imageVector = item.second,
-                                            contentDescription = "Ícone ",
-                                            modifier = Modifier
-                                                .clip(CircleShape)
-                                                .size(40.dp)
-                                                .background(
-                                                    MaterialTheme.colorScheme.inverseOnSurface,
-                                                    CircleShape
-                                                )
-                                                .padding(1.dp),
-                                            tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                        )
-                                    }
-                                )
+                                        },
+                                        icon = {
+                                            Icon(
+                                                imageVector = item.second,
+                                                contentDescription = "Ícone ",
+                                                modifier = Modifier
+                                                    .clip(CircleShape)
+                                                    .size(30.dp)
+                                                    .background(
+                                                        MaterialTheme.colorScheme.onTertiary,
+                                                        CircleShape
+                                                    )
+                                                    .padding(1.dp),
+                                                tint = MaterialTheme.colorScheme.onTertiaryContainer
+                                            )
+                                        }
+                                    )
+                                }
                             }
-
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }

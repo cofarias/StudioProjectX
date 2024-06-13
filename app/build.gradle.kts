@@ -59,6 +59,7 @@ android {
 dependencies {
     implementation("com.google.firebase:firebase-config-ktx")
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.androidx.material.icons.extended)
