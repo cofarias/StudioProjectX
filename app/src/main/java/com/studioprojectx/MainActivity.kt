@@ -74,7 +74,6 @@ class MainActivity : ComponentActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     showBottomBar = remoteConfig.getBoolean("show_bottom_bar")
-                    println("Valor da chave 'show_bottom_bar': $showBottomBar")
                 } else {
                     Toast.makeText(
                         this,
@@ -83,10 +82,6 @@ class MainActivity : ComponentActivity() {
                     ).show()
                 }
             }
-
-
-        println("Número de chaves = ${remoteConfig.all.size}")
-        println("Nome da chave = ${remoteConfig.all.keys}")
 
         remoteConfig.addOnConfigUpdateListener(object : ConfigUpdateListener {
             @RequiresApi(Build.VERSION_CODES.R)
