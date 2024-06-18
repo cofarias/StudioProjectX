@@ -7,4 +7,5 @@ data class HomeUIState(
     val descriptionProductChange: (String) -> Unit = {},
     val observationProduct: String = "",
     val observationProductChange: (String) -> Unit = {},
+    val products: List<Map<String, Any>> = emptyList()
 )

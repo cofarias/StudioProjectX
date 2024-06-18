@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,9 +24,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -47,8 +50,31 @@ fun HomeScreen(
     onTaskListClick: () -> Unit = {},
     onEvent: (HomeEvent) -> Unit
 ) {
+    Scaffold(
+        topBar = {},
+        content = { paddingValues ->
+            HomeContent(
+                paddingValues = paddingValues,
+                uiState = uiState,
+                onNewTaskClick = onNewTaskClick,
+                onTaskListClick = onTaskListClick,
+                onEvent = onEvent
+            )
+        }
+    )
+}
+
+@Composable
+fun HomeContent(
+    uiState: HomeUIState,
+    onEvent: (HomeEvent) -> Unit,
+    onNewTaskClick: () -> Unit = {},
+    onTaskListClick: () -> Unit = {},
+    paddingValues: PaddingValues
+) {
     Column(
         modifier = Modifier
+            .padding(paddingValues)
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
@@ -56,12 +82,13 @@ fun HomeScreen(
         val showRegisterProduct = remember { mutableStateOf(false) }
 
         ListOptionsFeatures(
+            uiState = uiState,
             onNewTaskClick = onNewTaskClick,
             onTaskListClick = onTaskListClick,
-            showRegisterProduct = showRegisterProduct.value,
             onShowRegisterProductClick = {
                 showRegisterProduct.value = !showRegisterProduct.value
-            }
+            },
+            onEvent = onEvent
         )
 
         if (showRegisterProduct.value) {
@@ -70,17 +97,18 @@ fun HomeScreen(
                 onEvent = onEvent
             )
         }
-
     }
 }
 
 @Composable
 fun ListOptionsFeatures(
+    uiState: HomeUIState,
+    onEvent: (HomeEvent) -> Unit,
     onNewTaskClick: () -> Unit = {},
     onTaskListClick: () -> Unit = {},
-    showRegisterProduct: Boolean = false,
-    onShowRegisterProductClick: () -> Unit
+    onShowRegisterProductClick: () -> Unit,
 ) {
+    val showProducts = remember { mutableStateOf(false) }
     Spacer(modifier = Modifier.size(30.dp))
 
     ElevatedCard(
@@ -121,8 +149,7 @@ fun ListOptionsFeatures(
 
     ExtendedFloatingActionButton(
         onClick = onNewTaskClick,
-        Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -139,7 +166,7 @@ fun ListOptionsFeatures(
 
     ExtendedFloatingActionButton(
         onClick = onTaskListClick,
-        Modifier
+        modifier = Modifier
             .fillMaxWidth()
     ) {
         Row(
@@ -157,7 +184,7 @@ fun ListOptionsFeatures(
 
     ExtendedFloatingActionButton(
         onClick = onShowRegisterProductClick,
-        Modifier
+        modifier = Modifier
             .fillMaxWidth()
     ) {
         Row(
@@ -172,6 +199,42 @@ fun ListOptionsFeatures(
     }
 
     Spacer(modifier = Modifier.size(30.dp))
+
+    ExtendedFloatingActionButton(
+        onClick = {
+            showProducts.value = !showProducts.value
+            onEvent(HomeEvent.GetProducts)
+        },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                fontWeight = FontWeight.Bold,
+                text = "Lista de produtos - Firebase"
+            )
+        }
+    }
+
+    ListProducts(showProducts, uiState)
+}
+
+@Composable
+private fun ListProducts(
+    showProducts: MutableState<Boolean>,
+    uiState: HomeUIState
+) {
+    if (showProducts.value) {
+        uiState.products.forEach { product ->
+            Text(
+                text = product["name_product"] as? String ?: "N/A",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+    }
 }
 
 @Composable
@@ -246,8 +309,8 @@ fun CreateProduct(
                 .fillMaxWidth()
                 .height(50.dp),
             colors = ButtonColors(
-                containerColor = Color.Magenta,
-                contentColor = Color.White,
+                containerColor = Color(0xFFFFEB3B),
+                contentColor = Color.Black,
                 disabledContainerColor = Color(0xFF888888),
                 disabledContentColor = Color(0xFF888888)
             ),
@@ -261,7 +324,6 @@ fun CreateProduct(
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

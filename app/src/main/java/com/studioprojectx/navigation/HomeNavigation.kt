@@ -26,9 +26,9 @@ fun NavGraphBuilder.homeScreen(
             onNewTaskClick = onNavigateToNewTaskForm,
             onTaskListClick = onNavigateToTaskList,
             uiState = uiState,
-            onEvent = {
+            onEvent = { event ->
                 scope.launch {
-                    viewModel.addProductToFirestore()
+                    viewModel.onEvent(event = event)
                 }
             }
         )

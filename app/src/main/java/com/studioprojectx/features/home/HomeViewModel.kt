@@ -23,7 +23,8 @@ class HomeViewModel(
 
     fun onEvent(event: HomeEvent) {
         when (event) {
-            HomeEvent.AddProduct -> addProductToFirestore()
+            HomeEvent.AddProduct -> addProduct()
+            HomeEvent.GetProducts -> getProducts()
         }
     }
 
@@ -43,7 +44,6 @@ class HomeViewModel(
         }
     }
 
-
     private fun getProductMap(): Map<String, String> {
         return hashMapOf(
             "name_product" to _uiState.value.nameProduct,
@@ -52,7 +52,7 @@ class HomeViewModel(
         )
     }
 
-    fun addProductToFirestore() {
+    fun addProduct() {
         val product = getProductMap()
         db.collection("products")
             .add(product)
@@ -64,4 +64,22 @@ class HomeViewModel(
             }
     }
 
+    fun getProducts() {
+        db.collection("products")
+            .get()
+            .addOnSuccessListener { result ->
+                val products = result.map { document ->
+                    document.data
+                }
+
+                _uiState.update { currentState ->
+                    currentState.copy(products = products)
+                }
+
+                Log.d(TAG, "Products retrieved: $products")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error getting documents", e)
+            }
+    }
 }

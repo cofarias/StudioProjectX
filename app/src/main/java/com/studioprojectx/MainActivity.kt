@@ -89,7 +89,6 @@ class MainActivity : ComponentActivity() {
                 if (configUpdate.updatedKeys.contains("show_bottom_bar")) {
                     remoteConfig.activate().addOnCompleteListener {
 
-
                     }
                 }
             }
@@ -97,8 +96,7 @@ class MainActivity : ComponentActivity() {
             override fun onError(error: FirebaseRemoteConfigException) {
                 println("Erroor")
             }
-        }
-        )
+        })
 
 
         setContent {
