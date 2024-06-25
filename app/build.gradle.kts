@@ -57,6 +57,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.coil)
     implementation("com.google.firebase:firebase-config-ktx")
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)

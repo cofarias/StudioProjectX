@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,7 +21,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -33,12 +33,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.studioprojectx.features.home.model.HomeEvent
 import com.studioprojectx.features.home.model.HomeUIState
 import com.studioprojectx.ui.theme.StudioProjectXTheme
@@ -76,6 +79,7 @@ fun HomeContent(
         modifier = Modifier
             .padding(paddingValues)
             .padding(16.dp)
+            .fillMaxHeight()
             .verticalScroll(rememberScrollState())
     ) {
 
@@ -110,6 +114,13 @@ fun ListOptionsFeatures(
 ) {
     val showProducts = remember { mutableStateOf(false) }
     Spacer(modifier = Modifier.size(30.dp))
+    val images: List<String> = listOf(
+        "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
+        "https://cdn.pixabay.com/photo/2024/02/26/19/39/monochrome-image-8598798_640.jpg",
+        "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg",
+        "https://images.pexels.com/photos/1525041/pexels-photo-1525041.jpeg?cs=srgb&dl=pexels-francesco-ungaro-1525041.jpg&fm=jpg"
+    )
+    val image = images.random()
 
     ElevatedCard(
         colors = CardColors(
@@ -118,29 +129,31 @@ fun ListOptionsFeatures(
             disabledContainerColor = Color.LightGray,
             disabledContentColor = Color.LightGray
         ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp,
-            pressedElevation = 100.dp,
-            focusedElevation = 100.dp,
-            hoveredElevation = 10.dp,
-            draggedElevation = 10.dp,
-            disabledElevation = 10.dp
-        ),
         modifier = Modifier
-            .height(150.dp)
+            .height(200.dp)
             .fillMaxWidth()
     ) {
         Box(
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.TopCenter,
             modifier = Modifier
                 .fillMaxSize()
         ) {
+            AsyncImage(
+                model = image,
+                contentDescription = "Initial Image",
+                modifier = Modifier
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                contentScale = ContentScale.Crop
+            )
+
             Text(
                 text = "Olá, seja bem vindo",
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(16.dp),
+                    .padding(4.dp),
             )
         }
     }
