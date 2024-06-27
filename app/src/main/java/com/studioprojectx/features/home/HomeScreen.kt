@@ -16,35 +16,38 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.studioprojectx.features.home.model.HomeEvent
 import com.studioprojectx.features.home.model.HomeUIState
 import com.studioprojectx.ui.theme.StudioProjectXTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -231,6 +234,8 @@ fun ListOptionsFeatures(
         }
     }
 
+    Spacer(modifier = Modifier.padding(16.dp))
+
     ListProducts(showProducts, uiState)
 }
 
@@ -240,12 +245,26 @@ private fun ListProducts(
     uiState: HomeUIState
 ) {
     if (showProducts.value) {
-        uiState.products.forEach { product ->
+        Text(
+            text = "Itens que estão no banco de dados",
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        if (uiState.products.isEmpty()) {
             Text(
-                text = product["name_product"] as? String ?: "N/A",
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(16.dp)
+                text = "Nenhum produto cadastrado",
+                textAlign = TextAlign.Center
             )
+        } else {
+            uiState.products.forEach { product ->
+                Text(
+                    text = product["name_product"] as? String ?: "N/A",
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(6.dp)
+                )
+            }
         }
     }
 }
@@ -255,6 +274,10 @@ fun CreateProduct(
     uiState: HomeUIState,
     onEvent: (HomeEvent) -> Unit
 ) {
+    val scope = rememberCoroutineScope()
+    val snackBarHostState = remember { SnackbarHostState() }
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier
             .border(
@@ -302,12 +325,6 @@ fun CreateProduct(
 
         TextField(
             modifier = Modifier.fillMaxWidth(),
-            trailingIcon = {
-                Icon(
-                    Icons.Filled.Close,
-                    contentDescription = "Localized description"
-                )
-            },
             label = { Text("Observações") },
             singleLine = true,
             placeholder = { Text(text = "Observações") },
@@ -315,14 +332,14 @@ fun CreateProduct(
             onValueChange = uiState.observationProductChange,
         )
 
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(16.dp))
 
         Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
             colors = ButtonColors(
-                containerColor = Color(0xFFFFEB3B),
+                containerColor = Color(0xFFFF00FF),
                 contentColor = Color.Black,
                 disabledContainerColor = Color(0xFF888888),
                 disabledContentColor = Color(0xFF888888)
@@ -333,7 +350,21 @@ fun CreateProduct(
                     fontWeight = FontWeight.Bold,
                 )
             },
-            onClick = { onEvent(HomeEvent.AddProduct) }
+            onClick = {
+                onEvent(HomeEvent.AddProduct)
+                focusManager.clearFocus()
+                scope.launch {
+                    snackBarHostState.showSnackbar("Produto cadastrado com sucesso")
+                }
+            }
+        )
+
+        Spacer(modifier = Modifier.padding(8.dp))
+
+        SnackbarHost(
+            hostState = snackBarHostState,
+            modifier = Modifier
+                .align(Alignment.Start)
         )
     }
 }

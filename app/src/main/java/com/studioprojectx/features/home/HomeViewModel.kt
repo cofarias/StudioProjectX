@@ -25,6 +25,17 @@ class HomeViewModel(
         when (event) {
             HomeEvent.AddProduct -> addProduct()
             HomeEvent.GetProducts -> getProducts()
+            HomeEvent.ClearFields -> clearFields()
+        }
+    }
+
+    private fun clearFields() {
+        _uiState.update {
+            it.copy(
+                nameProduct = "",
+                descriptionProduct = "",
+                observationProduct = "",
+            )
         }
     }
 
@@ -52,7 +63,7 @@ class HomeViewModel(
         )
     }
 
-    fun addProduct() {
+    private fun addProduct() {
         val product = getProductMap()
         db.collection("products")
             .add(product)
@@ -62,9 +73,11 @@ class HomeViewModel(
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
             }
+
+        clearFields()
     }
 
-    fun getProducts() {
+    private fun getProducts() {
         db.collection("products")
             .get()
             .addOnSuccessListener { result ->
